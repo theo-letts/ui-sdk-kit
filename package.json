@@ -1,0 +1,31 @@
+{
+  "name": "ui-sdk-kit",
+  "version": "0.1.0",
+  "private": true,
+  "description": "A design kit on UI SDK: its React components, its default web.css, tuned to look like ui-sdk.dev.",
+  "license": "MIT",
+  "author": "Theo Letts",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc -b && vite build",
+    "preview": "vite preview",
+    "contrast": "node scripts/contrast.mjs",
+    "format": "prettier --write .",
+    "ci": "tsc --noEmit && node scripts/contrast.mjs && prettier --check . && vite build"
+  },
+  "dependencies": {
+    "@ui-sdk/core": "0.1.0-beta.17",
+    "@ui-sdk/react": "0.1.0-beta.17",
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1"
+  },
+  "devDependencies": {
+    "@types/react": "^19.3.2",
+    "@types/react-dom": "^19.3.0",
+    "@vitejs/plugin-react": "^6.3.0",
+    "prettier": "^3.10.1",
+    "typescript": "^7.0.2",
+    "vite": "^8.3.8"
+  }
+}

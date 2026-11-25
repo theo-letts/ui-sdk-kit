@@ -1,0 +1,160 @@
+/* The kit, imported the way a project would. Declaring the layer first means
+   the CSS ui-sdk injects at runtime lands below everything else. */
+@layer ui-sdk;
+@import "@ui-sdk/core/web.css";
+@import "../kit/ui-sdk-kit.css";
+
+/* Layout for this specimen page only. Not part of the kit. */
+.page {
+  max-width: 76rem;
+  margin: 0 auto;
+  padding: 0 2rem 6rem;
+}
+
+.site-header {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  height: 3.5rem;
+  border-bottom: 1px solid var(--kit-frame);
+}
+
+.wordmark {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  font-size: 1.125rem;
+  font-weight: 500;
+  letter-spacing: -0.02em;
+}
+
+.wordmark-mark {
+  width: 1.125rem;
+  height: 1.125rem;
+  background: var(--ui-foreground);
+}
+
+.site-nav {
+  display: flex;
+  gap: 1.25rem;
+  margin-inline-end: auto;
+  font-size: 0.875rem;
+}
+
+.site-nav a {
+  color: var(--kit-subtle);
+  text-decoration: none;
+}
+
+.site-nav a:hover {
+  color: var(--ui-foreground);
+}
+
+/* minmax(0, 1fr) rather than the implicit auto track: an auto track grows to
+   the CTA row's min-content, two 14rem columns, and pushed the page sideways
+   at phone width. */
+.hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 2rem;
+  padding: 4rem 0 3rem;
+}
+
+.cta-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(14rem, 100%), 1fr));
+  gap: 0.75rem;
+  max-width: 50rem;
+}
+
+.section {
+  display: grid;
+  gap: 1.5rem;
+  padding-top: 4rem;
+}
+
+.section-head {
+  display: grid;
+  gap: 0.5rem;
+}
+
+.swatches {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(11rem, 1fr));
+  gap: 0.75rem;
+}
+
+.swatch {
+  display: grid;
+  gap: 0.5rem;
+  padding: 0.75rem;
+}
+
+.swatch-chip {
+  height: 3rem;
+  border: 1px solid var(--ui-border);
+}
+
+.swatch-name {
+  font-family: var(--ui-font-mono);
+  font-size: 0.75rem;
+}
+
+.type-scale {
+  display: grid;
+  gap: 1.5rem;
+  padding: 2rem;
+}
+
+.specimens {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(22rem, 1fr));
+  gap: 0.75rem;
+}
+
+.specimen {
+  display: grid;
+  grid-template-rows: auto 1fr;
+}
+
+.specimen-label {
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid var(--kit-frame);
+}
+
+.stage {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  min-height: 11rem;
+  padding: 2rem 1.5rem;
+  font-size: var(--ui-font-size);
+}
+
+.stage > .stack {
+  display: grid;
+  gap: 0.75rem;
+  width: min(18rem, 100%);
+}
+
+.stage label:not([data-slot]) {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+@media (max-width: 40rem) {
+  .page {
+    padding-inline: 1rem;
+  }
+
+  .site-nav {
+    display: none;
+  }
+
+  .specimens {
+    grid-template-columns: 1fr;
+  }
+}

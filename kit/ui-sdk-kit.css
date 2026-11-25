@@ -1,0 +1,242 @@
+/*
+ * UI SDK kit — the look of ui-sdk.dev on top of UI SDK's own default style.
+ *
+ * This file is a layer over `@ui-sdk/core/web.css`, not a replacement for it.
+ * web.css draws every component; this file only re-points its tokens at the
+ * website's values (Geist, square corners, ink strokes, the #f8f8f8 canvas, the
+ * #006bff blue) and adds the page-level pieces the site has and web.css does
+ * not: display type, mono eyebrows, the big CTA, the panel and grid surfaces.
+ *
+ * Import it after web.css. Plain CSS:
+ *
+ *   @layer ui-sdk;
+ *   @import "@ui-sdk/core/web.css";
+ *   @import "./ui-sdk-kit.css";
+ *
+ * With Tailwind v4, put both in the components layer so utilities still win:
+ *
+ *   @layer ui-sdk;
+ *   @import "tailwindcss";
+ *   @import "@ui-sdk/core/web.css" layer(components);
+ *   @import "./ui-sdk-kit.css" layer(components);
+ *
+ * Every rule below is either a token or scoped with :where()/:not([data-slot]).
+ * That is deliberate: web.css lives in the `ui-sdk` cascade layer, so anything
+ * here beats all of it whatever its specificity. A bare `a { color }` would
+ * repaint every navigation-menu link, which is an <a> with a data-slot.
+ *
+ * Colours are hex inside light-dark() so `npm run contrast` can read them.
+ * Every text pair clears 4.5:1 and every stroke or focus ring 3:1.
+ */
+
+:root {
+  --kit-version: "0.1.0";
+
+  /* --- web.css tokens, re-pointed at ui-sdk.dev ------------------------- */
+
+  --ui-background: light-dark(#ffffff, #0a0a0a);
+  --ui-foreground: light-dark(#0a0a0a, #fafafa);
+  --ui-muted: light-dark(#f5f5f5, #262626);
+  --ui-muted-foreground: light-dark(#6f6f6f, #a1a1a1);
+  /* Hairlines between things. Decorative, so no contrast floor. */
+  --ui-border: light-dark(#e5e5e5, #262626);
+  /* Control strokes. The site draws inputs and triggers in ink, not grey. */
+  --ui-input: light-dark(#171717, #8a8a8a);
+  --ui-primary: light-dark(#171717, #e5e5e5);
+  --ui-primary-foreground: light-dark(#fafafa, #171717);
+  --ui-destructive: light-dark(#e40014, #ff6568);
+  /* Focus is blue, and must clear 3:1 against the surface. web.css's own ring
+     is a pale grey halo at about 1.2:1, which is why this one is overridden. */
+  --ui-ring: light-dark(#006bff, #5fa1f3);
+  --ui-ring-border: light-dark(#006bff, #5fa1f3);
+  --ui-overlay: light-dark(#f8f8f8b8, #0a0a0ab8);
+  --ui-radius: 0;
+  --ui-font-size: 0.875rem;
+  --ui-line-height: 1.43;
+  --ui-font-sans: "Geist", ui-sans-serif, system-ui, -apple-system, sans-serif;
+  --ui-font-mono: "Geist Mono", ui-monospace, "SF Mono", Menlo, monospace;
+
+  /* --- what the site has that web.css does not ------------------------- */
+
+  /* The page behind the surfaces. Surfaces stay --ui-background. */
+  --kit-canvas: light-dark(#f8f8f8, #101010);
+  /* Panel outlines and the grid-paper lines. Decorative. */
+  --kit-frame: light-dark(#c8c8c8, #303030);
+  --kit-hairline: light-dark(#ebebeb, #1b1b1b);
+  /* Nav and secondary text. */
+  --kit-subtle: light-dark(#5d5d5d, #a4a4a4);
+  /* Link underlines at rest. */
+  --kit-line: light-dark(#a2a2a0, #6f6e6b);
+  /* The blue. --kit-accent is for text and strokes on a surface; the solid
+     pair is a fill with --kit-accent-foreground on it. In light mode #006bff
+     clears 4.5:1 on white but not on the canvas, so blue text sits on panels. */
+  --kit-accent: light-dark(#006bff, #5fa1f3);
+  --kit-accent-solid: light-dark(#006bff, #2466c3);
+  --kit-accent-solid-hover: light-dark(#0059d6, #2158a7);
+  --kit-accent-foreground: light-dark(#ffffff, #ffffff);
+  --kit-selection: light-dark(#cce1ff, #0b3d91);
+
+  /* Display type. The site's h1 is 72px, weight 450, tracked -0.045em. */
+  --kit-font-weight-display: 450;
+  --kit-tracking-display: -0.045em;
+  --kit-tracking-heading: -0.03em;
+  --kit-tracking-eyebrow: 0.12em;
+}
+
+/* --- colour scheme ------------------------------------------------------- */
+
+/* web.css follows the system. Set data-color-scheme on <html> to pin it.
+   The --lightningcss-* pair is flipped too, because Vite and Next lower
+   light-dark() into var(--lightningcss-light, …) var(--lightningcss-dark, …),
+   and color-scheme alone does nothing to those. */
+:root[data-color-scheme="light"] {
+  color-scheme: light;
+  --lightningcss-light: initial;
+  --lightningcss-dark: ;
+}
+
+:root[data-color-scheme="dark"] {
+  color-scheme: dark;
+  --lightningcss-light: ;
+  --lightningcss-dark: initial;
+}
+
+/* --- page ---------------------------------------------------------------- */
+
+:where(body) {
+  margin: 0;
+  background: var(--kit-canvas);
+  color: var(--ui-foreground);
+  font-family: var(--ui-font-sans);
+  font-size: 1rem;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+::selection {
+  background: var(--kit-selection);
+  color: var(--ui-foreground);
+}
+
+:where(h1, h2, h3, h4):not([data-slot]) {
+  margin: 0;
+  font-weight: var(--kit-font-weight-display);
+  text-wrap: balance;
+}
+
+:where(h1):not([data-slot]) {
+  font-size: clamp(2.5rem, 6vw + 1rem, 4.5rem);
+  line-height: 1.08;
+  letter-spacing: var(--kit-tracking-display);
+}
+
+:where(h2):not([data-slot]) {
+  font-size: clamp(1.75rem, 2vw + 1rem, 2.5rem);
+  line-height: 1.15;
+  letter-spacing: var(--kit-tracking-heading);
+}
+
+:where(h3):not([data-slot]) {
+  font-size: 1.5rem;
+  line-height: 1.33;
+  letter-spacing: var(--kit-tracking-heading);
+}
+
+:where(h4):not([data-slot]) {
+  font-size: 1rem;
+  font-weight: 500;
+  line-height: 1.5;
+}
+
+:where(a):not([data-slot]) {
+  color: inherit;
+  text-decoration-color: var(--kit-line);
+}
+
+:where(a):not([data-slot]):hover {
+  text-decoration-color: currentColor;
+}
+
+/* Thinner than web.css's 4px, now that the ring is a strong colour. */
+:where([data-slot], a, summary):focus-visible {
+  outline-width: 2px;
+  outline-offset: 2px;
+}
+
+/* --- page pieces --------------------------------------------------------- */
+
+/* The large intro paragraph under a display heading. */
+.kit-lede {
+  margin: 0;
+  max-width: 34rem;
+  color: var(--ui-foreground);
+  font-size: 1.25rem;
+  line-height: 1.5;
+  letter-spacing: -0.01em;
+}
+
+/* The small upper-case mono label, as on the site's "ANCHOR WIDTH". Case is
+   set by CSS so the markup keeps its real words. */
+.kit-eyebrow {
+  margin: 0;
+  color: var(--ui-muted-foreground);
+  font-family: var(--ui-font-mono);
+  font-size: 0.6875rem;
+  font-weight: 400;
+  line-height: 1rem;
+  letter-spacing: var(--kit-tracking-eyebrow);
+  text-transform: uppercase;
+}
+
+/* A white box with a pale outline, sitting on the canvas. */
+.kit-panel {
+  border: 1px solid var(--kit-frame);
+  background: var(--ui-background);
+  color: var(--ui-foreground);
+}
+
+/* Graph paper, for stages that show a component on its own. */
+.kit-grid {
+  background-color: var(--ui-background);
+  background-image:
+    linear-gradient(var(--kit-hairline) 1px, transparent 1px),
+    linear-gradient(90deg, var(--kit-hairline) 1px, transparent 1px);
+  background-size: 16px 16px;
+  background-position: -1px -1px;
+}
+
+/* --- buttons ------------------------------------------------------------- */
+
+/* web.css ships solid and destructive variants. The site adds a blue one and
+   a large size for calls to action. Same trigger list as web.css uses. */
+:is(
+  [data-slot="button"],
+  [data-slot="toggle"],
+  [data-slot="dialog-trigger"],
+  [data-slot="alert-dialog-trigger"],
+  [data-slot="drawer-trigger"],
+  [data-slot="popover-trigger"],
+  [data-slot="menu-trigger"]
+) {
+  &[data-variant="accent"] {
+    border-color: var(--kit-accent-solid);
+    background: var(--kit-accent-solid);
+    color: var(--kit-accent-foreground);
+
+    &:hover:not([data-disabled]) {
+      border-color: var(--kit-accent-solid-hover);
+      background: var(--kit-accent-solid-hover);
+    }
+  }
+
+  &[data-size="lg"] {
+    justify-content: flex-start;
+    height: 4rem;
+    padding-inline: 1.5rem;
+    font-size: 1.5rem;
+    font-weight: var(--kit-font-weight-display);
+    letter-spacing: var(--kit-tracking-heading);
+  }
+}
