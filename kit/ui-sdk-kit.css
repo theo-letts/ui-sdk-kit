@@ -30,7 +30,7 @@
  */
 
 :root {
-  --kit-version: "0.1.0";
+  --kit-version: "0.2.0";
 
   /* --- web.css tokens, re-pointed at ui-sdk.dev ------------------------- */
 
@@ -44,7 +44,10 @@
   --ui-input: light-dark(#171717, #8a8a8a);
   --ui-primary: light-dark(#171717, #e5e5e5);
   --ui-primary-foreground: light-dark(#fafafa, #171717);
-  --ui-destructive: light-dark(#e40014, #ff6568);
+  /* The site's #e40014 passes on white (4.87:1) but not on the tint web.css
+     puts behind it: its destructive button sets red text on an 8% red mix,
+     4.37:1, and 4.04:1 on the 14% hover. #c8001a clears both. */
+  --ui-destructive: light-dark(#c8001a, #ff6568);
   /* Focus is blue, and must clear 3:1 against the surface. web.css's own ring
      is a pale grey halo at about 1.2:1, which is why this one is overridden. */
   --ui-ring: light-dark(#006bff, #5fa1f3);
@@ -75,6 +78,14 @@
   --kit-accent-solid-hover: light-dark(#0059d6, #2158a7);
   --kit-accent-foreground: light-dark(#ffffff, #ffffff);
   --kit-selection: light-dark(#cce1ff, #0b3d91);
+  /* Success, which web.css has no token for: merged, passed, online, the
+     added side of a diff. Text and strokes on a surface. */
+  --kit-success: light-dark(#177034, #3fb950);
+  /* Tints for a row or a block, with --ui-foreground on them, or the matching
+     colour. Each is the 14% oklab mix web.css uses for a destructive button's
+     hover, so the contrast check on these covers that button too. */
+  --kit-success-tint: light-dark(#dfeae1, #131e14);
+  --kit-destructive-tint: light-dark(#fde2df, #261616);
 
   /* Display type. The site's h1 is 72px, weight 450, tracked -0.045em. */
   --kit-font-weight-display: 450;
@@ -102,6 +113,14 @@
 }
 
 /* --- page ---------------------------------------------------------------- */
+
+/* web.css sets border-box only on [data-slot] parts. Without this, any padded
+   width: 100% box of a project's own comes out wider than its column: the
+   queue app's detail pane ran 96px past its edge. :where() keeps it at zero
+   specificity, so any rule of a project's own still wins. */
+:where(*, *::before, *::after) {
+  box-sizing: border-box;
+}
 
 :where(body) {
   margin: 0;

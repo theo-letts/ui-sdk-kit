@@ -111,6 +111,9 @@ const TOKENS = [
   ["--kit-accent-solid", "accent"],
   ["--kit-selection", "selection"],
   ["--ui-destructive", "destructive"],
+  ["--kit-destructive-tint", "destructive tint"],
+  ["--kit-success", "success"],
+  ["--kit-success-tint", "success tint"],
 ] as const;
 
 export function App() {

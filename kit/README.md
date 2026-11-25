@@ -90,7 +90,20 @@ Page pieces are classes, because they are not UI SDK parts:
 | `kit-grid`    | Graph-paper surface, for a stage that shows one component    |
 
 `h1` to `h4` take the site's display type with no class. Links that are not UI
-SDK parts get a pale underline that darkens on hover.
+SDK parts get a pale underline that darkens on hover. Every element is
+`box-sizing: border-box`.
+
+### Status colours
+
+web.css has a destructive colour and nothing for success, so the kit adds one,
+plus a tint of each for rows and blocks such as diff lines:
+
+| Token                    | Use                                             |
+| ------------------------ | ----------------------------------------------- |
+| `--kit-success`          | Text or a stroke on a surface: merged, passed   |
+| `--kit-success-tint`     | Background, with `--ui-foreground` or the green |
+| `--ui-destructive`       | Text or a stroke on a surface, from web.css     |
+| `--kit-destructive-tint` | Background, with `--ui-foreground` or the red   |
 
 ### Light and dark
 
@@ -108,6 +121,10 @@ into variables that `color-scheme` alone does not switch.
   cascade layer, so an unlayered rule wins whatever its specificity. Scope your
   own element rules with `:not([data-slot])`, as this file does, or you will
   restyle UI SDK parts by accident: a navigation-menu link is an `<a>`.
+- **That includes `display`, which un-hides things.** UI SDK hides closed
+  parts, such as an inactive tab panel, with `[hidden]` and a `display: none`
+  inside its layer. An unlayered `.panel { display: flex }` of yours beats it,
+  and every panel shows at once. Write it as `.panel:not([hidden])`.
 - **Style parts through `data-slot` and state attributes**, such as
   `[data-slot="select-trigger"][data-open]`. They are UI SDK's public styling
   seam. Generated ids are not.
@@ -115,6 +132,9 @@ into variables that `color-scheme` alone does not switch.
   and focus ring 3:1, in both modes; `npm run contrast` in the kit repo proves
   it. If you add a colour, check it against its surface. Blue text (`--kit-accent`)
   clears 4.5:1 on white surfaces, not on the canvas, so keep it on panels.
+- **The light-mode red is darker than the site's.** ui-sdk.dev uses `#e40014`,
+  which fails 4.5:1 on the pale red web.css puts behind its own destructive
+  button. The kit uses `#c8001a`, which passes there and on the hover.
 - **The focus ring is blue, 2px.** web.css's own ring is a pale 4px halo at
   about 1.2:1 against white, below the 3:1 floor, so the kit replaces it.
 
